@@ -25,9 +25,10 @@ app.get("/",(req,res)=>{
 })
 
 //user route
-app.use("/cloths",clothesRouter)
+
 app.use("/search",searchRouter)
 app.use("/user",userRouter)
+app.use("/cloths",clothesRouter)
 app.use("/product",productRouter)
 
 app.use(authenticator)

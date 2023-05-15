@@ -1,5 +1,5 @@
 const express = require("express");
-const { ProductModel } = require("../models/ProductModel");
+const { ClothesModel } = require("../models/ClothesModel");
 
 const searchRouter = express.Router();
 
@@ -9,14 +9,14 @@ searchRouter.get("/", async (req, res) => {
     let q = req.query.q || "";
     
     try {
-      ProductModel.aggregate([
+      ClothesModel.aggregate([
         {
           $match: {
             $or: [
-              { title: { $regex: new RegExp(`${q}`, `i`) } },
-              { tags: { $regex: new RegExp(`${q}`, `i`) } },
-              { category: { $regex: new RegExp(`${q}`, `i`) } },
-              { description: { $regex: new RegExp(`${q}`, `i`) } },
+              { productName: { $regex: new RegExp(`${q}`, `i`) } },
+              { itemGender: { $regex: new RegExp(`${q}`, `i`) } },
+              { itemCategory: { $regex: new RegExp(`${q}`, `i`) } },
+              { sale: { $regex: new RegExp(`${q}`, `i`) } },
             ],
           },
         },

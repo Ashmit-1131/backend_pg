@@ -9,6 +9,7 @@ const { authenticator } = require("./middlewares/authenticator")
 const { cartNorderValidator } = require("./middlewares/cart&orderValidator")
 const { statRouter } = require("./routes/stat.routes")
 const { searchRouter } = require("./routes/search.routes")
+const { clothesRouter } = require("./routes/clothe.routes")
 require("dotenv").config()
 const app = express()
 app.use(cors())
@@ -24,6 +25,7 @@ app.get("/",(req,res)=>{
 })
 
 //user route
+app.use("/clothes",clothesRouter)
 app.use("/search",searchRouter)
 app.use("/user",userRouter)
 app.use("/product",productRouter)

@@ -41,6 +41,11 @@ userRouter.post("/login",async (req, res) => {
               name:data[0].name,
               email:data[0].email,
               role:data[0].role,
+              address:data[0].address,
+              phone:data[0].phone,
+              city:data[0].city,
+              pincode:data[0].pincode,
+              state:data[0].state,
               token: token,
               error: false,
             });
@@ -72,7 +77,7 @@ userRouter.post("/login",async (req, res) => {
 });
 
 userRouter.post("/register", userValidator, async (req, res) => {
-  let { email, name, role, password, phone } = req.body;
+  let { email, name, role, password, phone,address,pincode,city,state } = req.body;
 
   if (email && password) {
     bcrypt.hash(password, 5, async (err, hash) => {
@@ -84,7 +89,7 @@ userRouter.post("/register", userValidator, async (req, res) => {
         });
 
       try {
-        let user = new UserModel({ email, name, role, password: hash });
+        let user = new UserModel({ email, name, role, password: hash ,phone,address,pincode,city,state});
         await user.save();
         res.send({
           message: "User is regsitered",

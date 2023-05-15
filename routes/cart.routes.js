@@ -162,11 +162,11 @@ cartRouter.delete("/:id",async(req,res)=>{
 
 
 
-cartRouter.use(cartNorderValidator)
+// cartRouter.use(cartNorderValidator)
 
 
 
-cartRouter.post("/",async(req,res)=>{
+cartRouter.post("/add",async(req,res)=>{
 
     try {
        

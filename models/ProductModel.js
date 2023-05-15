@@ -21,9 +21,9 @@ const productSchema = mongoose.Schema({
   adminId:{type: String, required: true},
   stock:{type: Number, required: true},
   tags:{type: String}
-},{
-    versionKey:false
-});
+}
+    
+);
 
 const ProductModel = mongoose.model("/product", productSchema);
 

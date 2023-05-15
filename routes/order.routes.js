@@ -130,7 +130,7 @@ orderRouter.post("/",cartNorderValidator,async(req,res)=>{
  
  
   });
- orderRouter.use(adminValidator)   
+//  orderRouter.use(adminValidator)   
 
 
 orderRouter.post("/admin", async (req, res) => {

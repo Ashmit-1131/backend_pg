@@ -52,5 +52,5 @@ app.listen(process.env.PORT,async()=>{
     }
 
 
-    console.log("Seerver is running on port number",process.env.PORT)
+    console.log("Server is running on port number",process.env.PORT)
 })

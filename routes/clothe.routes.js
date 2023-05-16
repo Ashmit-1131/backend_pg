@@ -6,15 +6,21 @@ const clothesRouter = express.Router();
 
 clothesRouter.use(express.json());
 
-
 clothesRouter.get("/", async (req, res) => {
-  const page = req.query.page||0
   try {
-    let count = await ClothesModel.find(req.query).countDocuments();
-    let data = await ClothesModel.find(req.query).skip(page*10).limit(10);
+    const page = parseInt(req.query.page) || 0;
+    const limit = 5;
+    const skip = page * limit;
+
+    const query = req.query;
+    delete query.page;
+
+    const count = await ClothesModel.countDocuments(query);
+    const data = await ClothesModel.find(query).skip(skip).limit(limit);
+
     res.send({
       message: "All products data",
-      count:count,
+      count: count,
       status: 1,
       data: data,
       error: false,
@@ -26,7 +32,7 @@ clothesRouter.get("/", async (req, res) => {
       error: true,
     });
   }
-  });
+});
 
   clothesRouter.get("/:id", async (req, res) => {
     let { id: _id } = req.params;

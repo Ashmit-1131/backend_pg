@@ -1,47 +1,43 @@
 const express = require("express")
 const jwt = require("jsonwebtoken")
-const { cartNorderValidator } = require("../middlewares/cart&orderValidator")
+
 const { CartModel } = require("../models/CartModel")
 const cartRouter = express.Router()
 require("dotenv").config()
 
 
 
-cartRouter.get("/",(req,res)=>{
-    let token = req.headers.authorization
-    let page = req.query.page||0
-    jwt.verify(token, process.env.SecretKey, async function(err, decoded) {
-        if(err) res.send({
-            message:"Something went wrong: "+err,
-            status:0,
-            error:true
-        })
-        let {userId:user} = decoded
-        try {
-            let count = await CartModel.find({user}).countDocuments()
-            let data = await CartModel.find({user}).skip(page*5).limit(5)
-            res.send({
-                message:"All cart data",
-                status:1,
-                count:count,
-                data:data,
-                error:false
-            })
-        } catch (error) {
-            
-            res.send({
-                message:"Something went wrong: "+error.message,
-                status:0,
-                error:true
-            })
 
-        }
-     
-      });
+cartRouter.get("/", async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+    const page = parseInt(req.query.page) || 0;
+    const limit = 5;
+    const skip = page * limit;
 
+    const query = req.query;
+    delete query.page;
+  
+    
+    const count = await CartModel.countDocuments(query);
+    const data = await CartModel.find(query).skip(skip).limit(limit);
 
+    res.send({
+      message: "All cart data",
+      status: 1,
+      count: count,
+      data: data,
+      error: false
+    });
+  } catch (error) {
+    res.send({
+      message: "Something went wrong: " + error.message,
+      status: 0,
+      error: true
+    });
+  }
+});
 
-})
 
 
 

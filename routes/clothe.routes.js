@@ -9,7 +9,7 @@ clothesRouter.use(express.json());
 clothesRouter.get("/", async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 0;
-    const limit = 5;
+    const limit = 10;
     const skip = page * limit;
 
     const query = req.query;

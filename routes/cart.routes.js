@@ -14,7 +14,7 @@ cartRouter.get("/", async (req, res) => {
     const page = parseInt(req.query.page) || 0;
     const limit = 5;
     const skip = page * limit;
-
+// some changes
     const query = req.query;
     delete query.page;
   

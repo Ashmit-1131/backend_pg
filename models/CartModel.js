@@ -9,7 +9,9 @@ const cartSchema = mongoose.Schema(
     itemGender:{type:String},
     itemCategory:{type:String},
     sale:{type:String},
-    quantity: { type: Number, required: true }
+    quantity: { type: Number, required: true },
+    user: { type: String },
+    pid: { type: String },
   },
   {
     versionKey: false,

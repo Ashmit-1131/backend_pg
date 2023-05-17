@@ -8,7 +8,8 @@ const cartSchema = mongoose.Schema(
     price:{type:String},
     itemGender:{type:String},
     itemCategory:{type:String},
-    sale:{type:String}
+    sale:{type:String},
+    quantity: { type: Number, required: true }
   },
   {
     versionKey: false,

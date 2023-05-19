@@ -75,61 +75,57 @@ orderRouter.patch("/:id",async(req,res)=>{
 
   
 
-
-orderRouter.post("/",cartNorderValidator,async(req,res)=>{
-    let token = req.headers.authorization
-    jwt.verify(token,process.env.SecretKey,async(err,decoded)=>{
-        if(err) res.send({
-            message:"Inavlid token: "+err,
-            status:0,
-            error:true
-        })
-
-        if(decoded){
-
-            await CartModel.deleteMany({user:decoded.userId})
-
-            try {
-        
-                req.body.forEach(el => {
-                    el.status="ordered"
-                    el.orderDate=String(Date.now())
-                    
-                });
-                
-                await OrderModel.insertMany(req.body)
-                
-                res.send({
-                    message:"Item added in order",
-                    status:1,
-                    error:false
-                })
-            } catch (error) {
-                
-                res.send({
-                    message:"Something went wrong: "+error.message,
-                    status:0,
-                    error:true
-                })
-        
-            }
-
-        }else{
-
-             
+  orderRouter.post("/add", cartNorderValidator, async (req, res) => {
+    let token = req.headers.authorization;
+    jwt.verify(token, process.env.SecretKey, async (err, decoded) => {
+      if (err)
+        res.send({
+          message: "Invalid token: " + err,
+          status: 0,
+          error: true,
+        });
+  
+      if (decoded) {
+        await CartModel.deleteMany({ user: decoded.userId });
+  
+        try {
+          if (Array.isArray(req.body)) { // Check if req.body is an array
+            req.body.forEach((el) => {
+              el.status = "ordered";
+              el.orderDate = String(Date.now());
+            });
+            console.log(req.body);
+            await OrderModel.insertMany(req.body);
+  
             res.send({
-                message:"Invalid token: ",
-                status:0,
-                error:true
-            })
-
+              message: "Item added in order",
+              status: 1,
+              error: false,
+            });
+          } else {
+            res.send({
+              message: "Invalid request body: expected an array",
+              status: 0,
+              error: true,
+            });
+          }
+        } catch (error) {
+          res.send({
+            message: "Something went wrong: " + error.message,
+            status: 0,
+            error: true,
+          });
         }
-
-    })
-   
- 
- 
+      } else {
+        res.send({
+          message: "Invalid token",
+          status: 0,
+          error: true,
+        });
+      }
+    });
   });
+  
 //  orderRouter.use(adminValidator)   
 
 

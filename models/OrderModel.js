@@ -14,7 +14,7 @@ const orderSchema = mongoose.Schema({
     status:{type:String,required:true},
     orderDate:{type:String,required:true},
     address:{type:String,required:true},
-    pid:{type:String,required:true},
+    pid:{type:String},
   totalDiscountPrice:{type:Number,required:true}
 
     

@@ -1,43 +1,50 @@
-const jwt = require("jsonwebtoken")
-require("dotenv").config()
-async function authenticator(req,res,next){
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
+async function authenticator(req, res, next) {
+    const token = req.headers.authorization;
 
-    let token = req.headers.authorization
-    jwt.verify(token, process.env.SecretKey, async function(err, decoded) {
+    // Handle missing token
+    if (!token) {
+        return res.status(401).send({
+            message: "Token is missing. Please login.",
+            status: 2,
+            error: true,
+        });
+    }
 
-        if(err) res.send({
-            message:"Something went wrong: "+err,
-            status:0,
-            error:true
-        })
+    jwt.verify(token, process.env.SecretKey, async function (err, decoded) {
+        if (err) {
+            return res.status(401).send({
+                message: "Something went wrong: " + err.message,
+                status: 0,
+                error: true,
+            });
+        }
 
-        if(decoded){
-            console.log(decoded)
-            if(decoded.role=="deactivate"){
-                res.send({
-                    message:"Your Account is deactivated : Conatact SuperAdmin",
-                    status:0,
-                    error:true
-                })
-            }else{
-                next()
+        if (decoded) {
+            console.log(decoded);
+
+            if (decoded.role === "deactivate") {
+                return res.status(403).send({
+                    message: "Your Account is deactivated. Contact SuperAdmin.",
+                    status: 0,
+                    error: true,
+                });
             }
 
-
-        }else{
-            res.send({
-                message:"Invalid token , Please Login",
-                status:2,
-                error:true
-            })
+            // Token is valid, proceed to the next middleware
+            next();
+        } else {
+            return res.status(401).send({
+                message: "Invalid token. Please login.",
+                status: 2,
+                error: true,
+            });
         }
-     
-      });
-
-
+    });
 }
 
-module.exports={
-    authenticator
-}
+module.exports = {
+    authenticator,
+};
